@@ -1,5 +1,6 @@
 1. Start the game by clicking on a difficulty
 2. Click numbers in the grid to fill the empty spaces in the equation
 3. If you get 3 wrong in a row, it's game over!
+4. If you get 5 right in a row, you earn back a life!
 
 For Flow Computing

@@ -8,9 +8,9 @@ class Game(Frame):
         Frame.__init__(self, parent)
         self.controller = controller
         
-        
         self.SUCCESS_POINTS = 25
         self.SCORE_DECREASE_SPEED = 500
+        self.STREAK_THRESHOLD = 5
         
         self.timer = None
         
@@ -22,6 +22,7 @@ class Game(Frame):
         self.difficulty = difficulty
         self.lives = 3
         self.score = 100
+        self.streak = 0
         self.equation_filled = False
         self.button_mode = 0 # 0 for Go!, 1 for Next
         
@@ -93,6 +94,7 @@ class Game(Frame):
         self.status_image = Label(self.equation_frame, image=self.pixel)
         self.status_image.pack(pady=10)
         
+        
     # Reset the hearts on display
     def reset_hearts(self):
         for h in self.hearts:
@@ -140,10 +142,12 @@ class Game(Frame):
         
             return result, equation
         
-        result = -1
+        result = None
         equation = ""
-        while result < 0:
+        while result is None:
             result, equation = gen_equation_and_result()
+            if '.' in str(result) and len(str(result).split('.')[1]) > 2:
+                result = None
             
         return result, equation
     
@@ -202,9 +206,15 @@ class Game(Frame):
             self.score += self.SUCCESS_POINTS
             self.score_label_text.set(str(self.score))
             self.status_image.configure(image=self.tick)
+            self.streak += 1
+            
+            if self.streak == self.STREAK_THRESHOLD:
+                self.add_life()
+                self.streak = 0
         else:
             self.remove_life()
             self.status_image.configure(image=self.cross)
+            self.streak = 0
         self.button_mode = 1
         self.next_button.configure(text="Next Question")
     
@@ -216,6 +226,15 @@ class Game(Frame):
     
         if self.lives < 1:
             self.do_loss()
+            
+    # Add a life
+    def add_life(self):
+        print("Adding life!")
+        print(self.lives)
+        if self.lives < 3:
+            self.lives += 1
+            self.hearts[3 - self.lives].configure(image=self.red_heart)
+        print(self.lives)
     
     # Stop the timer
     def stop_timer(self):
@@ -229,7 +248,7 @@ class Game(Frame):
         
         self.timer = self.after(self.SCORE_DECREASE_SPEED, self.timer_score)
         
-        if self.score < 1:
+        if self.score <= 0:
             self.do_loss()
     
     # Do a round    
@@ -253,7 +272,7 @@ class Game(Frame):
         self.stop_timer()
         self.reset_vars(difficulty)
         self.reset_hearts
-        print("Diff: " + str(difficulty))
+        print("Difficulty: " + str(difficulty))
         
         # Start the timer
         self.timer_score()

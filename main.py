@@ -18,6 +18,9 @@ class JungleRumble(Tk):
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
         
+        self.instructions = None
+        self.highscores = None
+        
         self.frames = {}
         # Cycle through frames, making them exist
         for F in (MainMenu, Game, Loss):
@@ -64,9 +67,14 @@ class JungleRumble(Tk):
 
     def show_instructions(self):
         self.instructions = Instructions()
+        
+    def quit_windows(self):
+        self.quit()
 
 if __name__ == '__main__':    
     game = JungleRumble()
     game.title("JungleRumble")
+    game.geometry("564x570")
     game.resizable(False, False)
+    game.protocol("WM_DELETE_WINDOW", game.quit_windows)
     game.mainloop()

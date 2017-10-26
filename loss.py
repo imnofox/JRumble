@@ -32,8 +32,13 @@ class Loss(Frame):
         self.score = Label(self, textvariable=self.score_txt, font=("Comic Sans MS", 60, 'bold'), bg="#DB4545", fg="#ffffff")
         self.score.pack(padx=5)
         
-        self.button = Button(self, text="Main Menu", width=15, bg="#FFE6CC", pady=10, font=("Comic Sans MS", 12), command=lambda: self.controller.show_frame("MainMenu"))
+        self.button = Button(self, text="Main Menu", width=15, bg="#FFE6CC", pady=10, font=("Comic Sans MS", 12), command=self.leave)
         self.button.pack(pady=2)
+        
+    def leave(self):
+        self.controller.show_frame("MainMenu")
+        if self.controller.highscores:
+            self.controller.highscores.quit()
         
     def start(self, score=None, is_highscore=False, *args, **kwargs):
         self.score = score
@@ -46,5 +51,5 @@ class Loss(Frame):
             self.emoji_image.config(image=self.emoji_happy)
         else:
             self.title_txt.set("Gameover!")
-            self.emoji_image.config(image=self.sad)
+            self.emoji_image.config(image=self.emoji_sad)
     

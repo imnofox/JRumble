@@ -12,7 +12,10 @@ class Instructions:
     def create(self):
         file = open("texts/instructions.txt", 'r')
         
-        self.frame = LabelFrame(self.window, text=self.title, padx=5, pady=5)
+        self.container = Frame(self.window, padx=5)
+        self.container.pack()
+        
+        self.frame = LabelFrame(self.container, text=self.title, padx=5, pady=5)
         self.frame.pack()
         
         text = Label(self.frame, text=file.read(), wraplength=400, justify=LEFT)

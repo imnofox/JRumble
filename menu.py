@@ -12,14 +12,15 @@ class MainMenu(Frame):
         self.menu = Frame(self, bg="#27ab87")
         self.menu.pack(side="top", fill="both", expand=True)
         
-        self.title = Label(self.menu, text=self.title, font=("Comic Sans MS", 60, 'bold'), bg="#27ab87")
-        self.title.pack(padx=5)
+        self.background_image = PhotoImage(file="images/bg2.gif")
+        self.background_label = Label(self.menu, image=self.background_image)
+        self.background_label.place(x=0, y=0, relwidth=1, relheight=1)
         
         pad = 2
         font = ("Comic Sans MS", 12)
         
         self.button_easy = Button(self.menu, text="Easy", width=15, bg="#FFE6CC", pady=pad, font=font, command=lambda: self.start_game(1))
-        self.button_easy.pack(pady=2)
+        self.button_easy.pack(pady=(200, 2))
         
         self.button_medium = Button(self.menu, text="Medium", width=15, bg="#FFE6CC", pady=pad, font=font, command=lambda: self.start_game(2))
         self.button_medium.pack(pady=2)
@@ -33,7 +34,7 @@ class MainMenu(Frame):
         self.button_ins = Button(self.menu, text="Instructions", width=15, bg="#D5E8D4", pady=pad, font=font, command=self.controller.show_instructions)
         self.button_ins.pack(pady=2)
         
-        self.button_quit = Button(self.menu, text="Quit", width=15, bg="#F8CECC", pady=pad, font=font, command=self.quit)
+        self.button_quit = Button(self.menu, text="Quit", width=15, bg="#F8CECC", pady=pad, font=font, command=self.controller.quit_windows)
         self.button_quit.pack(pady=2)
         
     def start_game(self, difficulty):
